@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="screen-orientation" content="portrait" />
+    <!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait" />
+    <!-- QQ强制竖屏 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telphone=no" />
+    <meta name="format-detection" content="email=no" />
+    <title>上传合成</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+    <div class="warp">
+
+        <div class="up-btn-box">
+            <span>上传图片</span>
+            <input type="file" accept="image/*" id="upimgBtn2"/>
+        </div>
+        <div class="up-after">
+            <canvas id="canvas1"></canvas>
+            <div class="generate">生成</div>
+            <img src="" id="view">
+        </div>
+        
+    </div>
+</body>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/create.js"></script>
+    <script src="./js/Hammer.js"></script>
+    <script src="./js/imgMerge.js"></script>
+    <script src="./js/main.js"></script>
+    <script type="text/javascript">
+        var canvas = document.getElementById("canvas1");
+
+
+        var imgMergeN;
+        $("#upimgBtn2").change(function(e){
+            var file = e.target.files[0]; //获取图片资源
+            // 只选择图片文件
+            if (!file.type.match('image.*')) {
+              return false;
+            };
+            var that = $(this);
+            var reader = new FileReader(file), img = new Image();
+            reader.readAsDataURL(file);
+            // 读文件成功的回调
+            reader.onload = function(e) {
+                imgMergeN = new imgMerge({
+                    canvasEl: canvas,   // canvas
+                    cWidth:750,         // canvas的宽度
+                    cHeight:1208,       // canvas的高度
+                    moveIndex: "upimg", // 要编辑图片的id
+                    data: [{ 
+                            val: './img/slide2.jpg',
+                            zIndex: 1,
+                            id: "bg"
+                        },
+                        {
+                            val:e.target.result,
+                            x: 0,
+                            y: 0,
+                            zIndex:51,
+                            scale: 1.2,
+                            rotation: 50,
+                            id:"upimg",
+                        },
+                        {
+                            val: '宙斯',
+                            x: 304,
+                            y: 45,
+                            fontSize:"42px",
+                            color:"#ffe42c",
+                            zIndex: 51,
+                            id: "tt",
+                            fontAlign:"center"
+                        }
+                    ],
+                    allLoadEnd:function(){
+                        console.log("全部加载完成!");
+
+                        $(".up-btn-box").hide();
+                        $(".up-after").show();
+                    }
+                });
+            }
+        })
+
+
+    </script>
+</html>

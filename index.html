@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimum-scale=1.0,maximum-scale=1.0,minimal-ui">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,Chrome=1">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="screen-orientation" content="portrait" />
+    <!-- uc强制竖屏 -->
+    <meta name="x5-orientation" content="portrait" />
+    <!-- QQ强制竖屏 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telphone=no" />
+    <meta name="format-detection" content="email=no" />
+    <title>图片合成</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+</head>
+<body>
+    <div class="warp">
+        <canvas id="canvas1"></canvas>s
+        <div class="generate">生成</div>
+
+        <img src="" id="view">
+    </div>
+</body>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/create.js"></script>
+    <script src="./js/Hammer.js"></script>
+    <script src="./js/imgMerge.js"></script>
+    <script src="./js/main.js"></script>
+    <script type="text/javascript">
+         // 简单图片合成
+        var canvas = document.getElementById("canvas1");
+        var imgMergeN = new imgMerge({
+            canvasEl: canvas,   // canvas
+            cWidth:608,         // canvas的宽度
+            cHeight:1049,       // canvas的高度
+            data: [{ 
+                    val: './img/slide2.jpg',
+                    zIndex: 1,
+                    id: "bg"
+                },
+                {
+                    val: '宙斯',
+                    x: 304,
+                    y: 45,
+                    fontSize:"42px",
+                    color:"#ffe42c",
+                    zIndex: 51,
+                    id: "tt",
+                    fontAlign:"center"
+                }
+            ],
+            allLoadEnd:function(){
+                console.log("全部加载完成!");
+            }
+        });
+
+    </script>
+</html>
