@@ -468,12 +468,16 @@ var imgMerge = (function() {
     }
     // 销毁
     imgMergeClass.prototype.destroy = function(){
-        this.hammer.off("pan");
-        this.hammer.off("pinchmove");
-        this.hammer.off("pinchend");
-        this.hammer.off("panend");
-        this.hammer.off("rotatemove");
-        this.hammer.off("rotateend");
+        // 判读有没有添加编辑事件
+        if(this.hammer){
+            this.hammer.off("pan");
+            this.hammer.off("pinchmove");
+            this.hammer.off("pinchend");
+            this.hammer.off("panend");
+            this.hammer.off("rotatemove");
+            this.hammer.off("rotateend");
+        }
+        
         this.stage.removeAllChildren();
         createjs.Ticker.removeEventListener("tick", this.stage);
     }
