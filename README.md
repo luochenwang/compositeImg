@@ -1,10 +1,13 @@
 # compositeImg
 图片合成，编辑
 
+我是使用createjs里面的 easeljs.js和手势插件hammer.js封装的一个图片合成和编辑功能，如果只是简单的合成只需要引入easeljs。
+
 
 # 合成图片
 ``` bash
 var imgMergeN = new imgMerge({
+    // 如果canvasEl不传 默认会创建一个离线canvas去生成。
     canvasEl: canvas,   // canvas
     cWidth:750,         // canvas的宽度
     cHeight:1208,       // canvas的高度
