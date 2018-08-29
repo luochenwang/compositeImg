@@ -194,6 +194,7 @@ var imgMerge = (function() {
                 imgN.index = this.options.data.length-1;
             }
             imgN.data = obj;
+            img.crossOrigin = '*';
             imgN.onload = function(){
 
                 var img = new createjs.Bitmap(imgN);
