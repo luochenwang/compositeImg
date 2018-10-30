@@ -1,7 +1,7 @@
 /**
  * Loren
  *
- * imgMerge 1.0.1
+ * imgMerge 1.0.2
  *
  * Released on: August 1, 2018
  */
@@ -35,7 +35,7 @@ var imgMerge = (function() {
             cHeight:1206,
             data:[],
             moveIndex:null,
-            daptation:true
+            daptation:false
         };
 
         // 图片判断正则
@@ -56,6 +56,9 @@ var imgMerge = (function() {
 
         if(this.options.daptation){
             this.viewAdaptation();
+        }else{
+            this.canvas.width = this.options.cWidth;
+            this.canvas.height = this.options.cHeight;
         }
 
 
@@ -194,7 +197,6 @@ var imgMerge = (function() {
                 imgN.index = this.options.data.length-1;
             }
             imgN.data = obj;
-            img.crossOrigin = '*';
             imgN.onload = function(){
 
                 var img = new createjs.Bitmap(imgN);
@@ -225,11 +227,14 @@ var imgMerge = (function() {
                     }
                 }else{
                     this.dataSort();
-                    this.fileImg = this.options.data[this.options.moveIndex].val;
-                    var fileImgW = this.fileImg.getBounds().width/2;
-                    var fileImgH = this.fileImg.getBounds().height/2;
-                    if(this.fileImg.regX != fileImgW && this.fileImg.regY != fileImgH){
-                        this.imgDataInit(this.fileImg);
+                    // 判断需不需要更新需要移动的元素
+                    if(this.options.moveIndex){
+                        this.fileImg = this.options.data[this.options.moveIndex].val;
+                        var fileImgW = this.fileImg.getBounds().width/2;
+                        var fileImgH = this.fileImg.getBounds().height/2;
+                        if(this.fileImg.regX != fileImgW && this.fileImg.regY != fileImgH){
+                            this.imgDataInit(this.fileImg);
+                        }
                     }
                 }
 
@@ -301,7 +306,7 @@ var imgMerge = (function() {
     // 全部元素加载完成
     imgMergeClass.prototype.loadingEnd = function (){
         this.dataSort();
-
+        this.update();
         if(typeof this.options.allLoadEnd == 'function'){
             this.options.allLoadEnd();
         }
@@ -390,6 +395,10 @@ var imgMerge = (function() {
                 beginScale: 0,
                 IsIn:true,
             };
+            // 添加元素的时候添加移动事件
+            if(!this.hammer){
+                this.addMoveImgEvent();
+            }
         }
     }
     // 添加套画布上
@@ -462,10 +471,10 @@ var imgMerge = (function() {
         var stageHeight = document.body.clientHeight;
         var stageScale = stageWidth/this.options.cWidth;
 
-        canvas.width = this.options.cWidth;
-        canvas.height = this.options.cHeight;
-        canvas.style.width = this.options.cWidth*stageScale + 'px';
-        canvas.style.height = this.options.cHeight*stageScale + 'px';
+        this.canvas.width = this.options.cWidth;
+        this.canvas.height = this.options.cHeight;
+        this.canvas.style.width = this.options.cWidth*stageScale + 'px';
+        this.canvas.style.height = this.options.cHeight*stageScale + 'px';
     }
     // 销毁
     imgMergeClass.prototype.destroy = function(){
@@ -478,7 +487,6 @@ var imgMerge = (function() {
             this.hammer.off("rotatemove");
             this.hammer.off("rotateend");
         }
-        
         this.stage.removeAllChildren();
         createjs.Ticker.removeEventListener("tick", this.stage);
     }
