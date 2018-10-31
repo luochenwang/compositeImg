@@ -16,6 +16,7 @@ var imgMergeN = new imgMerge({
     canvasEl: canvas,   // canvas
     cWidth:750,         // canvas的宽度
     cHeight:1208,       // canvas的高度
+    daptation:true,     // 自适应
     data: [{ 
             val: './img/slide2.jpg',  // 图片地址   *必传
             zIndex: 1,  // 层级
@@ -46,6 +47,7 @@ var imgMergeN = new imgMerge({
     cWidth:750,         // canvas的宽度
     cHeight:1208,       // canvas的高度
     moveIndex: "upimg", // 要编辑的id
+    daptation:true,     // 自适应
     data: [{ 
             val: './img/slide2.jpg',  // 图片地址   *必传
             zIndex: 1,  // 层级
