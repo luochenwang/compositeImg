@@ -126,4 +126,4 @@ imgMergeN.update();
 imgMergeN.destroy();
 ```
 
-
+因为是第一次封装，如果有什么问题可以找我，我会第一时间配合，QQ：759054119
