@@ -47,7 +47,7 @@ var imgMergeN = new imgMerge({
     cWidth:750,         // canvas的宽度
     cHeight:1208,       // canvas的高度
     moveIndex: "upimg", // 要编辑的id
-    daptation:true,     // 自适应
+    parentBoxEl:dom,    // 父级的类如果填写会根据的父级的宽高自适应  ‘.warp’ || '#warp'
     data: [{ 
             val: './img/slide2.jpg',  // 图片地址   *必传
             zIndex: 1,  // 层级
