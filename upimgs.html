@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 <body>
-    <div class="warp">
+    <div class="warp" id="warp">
 
         <div class="up-btn-box">
             <span>上传图片</span>
@@ -60,8 +60,8 @@
                     cWidth:750,         // canvas的宽度
                     cHeight:1208,       // canvas的高度
                     moveIndex: "upimg", // 要编辑图片的id
-                    daptation:true,
-                    data: [{ 
+                    parentBoxEl:'#warp',      // 上一级容器。 自适应
+                    data: [{
                             val: './img/slide2.jpg',
                             zIndex: 1,
                             id: "bg"
@@ -86,7 +86,7 @@
                             fontAlign:"center"
                         }
                     ],
-                    allLoadEnd:function(){
+                    firstAllLoadEnd:function(){
                         console.log("全部加载完成!");
 
                         $(".up-btn-box").hide();

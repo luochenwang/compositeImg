@@ -16,7 +16,7 @@ var imgMergeN = new imgMerge({
     canvasEl: canvas,   // canvas
     cWidth:750,         // canvas的宽度
     cHeight:1208,       // canvas的高度
-    daptation:true,     // 自适应
+    parentBoxEl:dom,    // 父级的类如果填写会根据的父级的宽高自适应  ‘.warp’ || '#warp'
     data: [{ 
             val: './img/slide2.jpg',  // 图片地址   *必传
             zIndex: 1,  // 层级
@@ -34,7 +34,7 @@ var imgMergeN = new imgMerge({
         }
     ],
     //  初始化完的callback
-    allLoadEnd:function(){   
+    firstAllLoadEnd:function(){   
         console.log("全部加载完成!");
     }
 });
@@ -106,7 +106,7 @@ imgMergeN.changeMoveImg(id);
 
 删除画布上的内容
 ``` bash
-// 删除画布上的元素,如果传入 'all' 删除全部的内容（索引也可以，不过建议传入id）
+// 删除画布上的元素,如果不传默认删除全部的内容（传索引也可以，不过建议传入id）
 imgMergeN.removeData();
 ```
 

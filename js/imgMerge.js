@@ -35,7 +35,7 @@ var imgMerge = (function() {
             cHeight:1206,
             data:[],
             moveIndex:null,
-            daptation:false
+            parentBoxEl:''
         };
 
         // 图片判断正则
@@ -54,7 +54,7 @@ var imgMerge = (function() {
             this.canvas = document.createElement('canvas');
         }
 
-        if(this.options.daptation){
+        if(this.options.parentBoxEl != ''){
             this.viewAdaptation();
         }else{
             this.canvas.width = this.options.cWidth;
@@ -307,8 +307,8 @@ var imgMerge = (function() {
     imgMergeClass.prototype.loadingEnd = function (){
         this.dataSort();
         this.update();
-        if(typeof this.options.allLoadEnd == 'function'){
-            this.options.allLoadEnd();
+        if(typeof this.options.firstAllLoadEnd == 'function'){
+            this.options.firstAllLoadEnd();
         }
     }
     // 添加元素到画布
@@ -332,9 +332,9 @@ var imgMerge = (function() {
     }
     // 删除元素
     imgMergeClass.prototype.removeData = function(val){
-
+        val = val || 'delactAll';
         var index = -1,idArr = [];
-        if(val == 'all'){
+        if(val == 'delactAll'){
             idArr = [];
             this.stage.removeAllChildren();
             this.options.data = [];
@@ -467,8 +467,20 @@ var imgMerge = (function() {
     };
     // 适配
     imgMergeClass.prototype.viewAdaptation = function(){
-        var stageWidth = document.body.clientWidth;
-        var stageHeight = document.body.clientHeight;
+        // 判断是不是id
+        var classIndex = this.options.parentBoxEl.indexOf("#");
+        var classData = this.options.parentBoxEl.slice(1,this.options.parentBoxEl.length);
+        if(classIndex != -1){
+            var parentBox = document.getElementById(classData);
+        }else{
+            var parentBox = document.getElementsByClassName(classData);
+            if(parentBox.length == 0){
+                parentBox.clientWidth = 0;
+            }else{
+                parentBox = parentBox[0];
+            }
+        }
+        var stageWidth = parentBox.clientWidth;
         var stageScale = stageWidth/this.options.cWidth;
 
         this.canvas.width = this.options.cWidth;
