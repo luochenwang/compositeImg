@@ -7,7 +7,7 @@
  */
 
 
-var imgMerge = (function() {
+(function() {
 
     function imgMergeClass(options){
 
@@ -27,7 +27,7 @@ var imgMerge = (function() {
          *   }
          */
 
-        this.fontFamily = '"PingFang SC", "PingHei", "STHeitiSC-Light", "Myriad Set Pro", "Lucida Grande", "Helvetica Neue", "Helvetica", "microsoft yahei", "SimHei", "tahoma", "Arial", "Verdana", "sans-serif"';
+        this.fontFamily = '"Arial", "Verdana", "sans-serif"';
         // 默认参数
         this.options = {
             canvasEl:null,
@@ -116,8 +116,6 @@ var imgMerge = (function() {
     imgMergeClass.prototype.addMoveImgEvent = function(){
         var _this = this;
         this.fileImg = this.options.data[this.options.moveIndex].val;
-
-        console.log(this.fileImg)
         this.hammer = new Hammer(this.canvas);
 
 
@@ -186,8 +184,6 @@ var imgMerge = (function() {
             var imgY = obj.y || 0;
             var imgScale = obj.scale || 1;
             var imgRotation = obj.rotation || 0;
-            console.log(obj);
-
 
             var imgN = new Image();
             imgN.src = obj.val;
@@ -208,15 +204,14 @@ var imgMerge = (function() {
                 img.rotation = imgRotation;
 
 
-
                 this.stage.addChild(img);
-                this.stage.update();
 
                 var shapeValIndex = imgN.index;
                 this.options.data[shapeValIndex].val = img;
+                var item = this.options.data[shapeValIndex].val;
                 if(typeof index === "number"){
 
-                    this.imgDataInit(this.options.data[shapeValIndex].val);
+                    this.imgDataInit(item);
 
                     if(this.options.moveIndex == shapeValIndex){
                         this.isAddImgEvent(imgN.data.moveIndex);
@@ -239,11 +234,33 @@ var imgMerge = (function() {
                 }
 
 
+                // 判断图片是否铺满剧中
+                if(imgN.data.align == 'center'){
+                     if(imgN.width > imgN.height){
+                        var scale = this.options.cWidth/imgN.width;
+                    }else{
+                        var scale = this.options.cHeight/imgN.height;
+                    }
 
-
-                if(typeof imgN.data.callback == 'function'){
-                    imgN.data.callback(this.options.data[shapeValIndex].val,imgN.width,imgN.height);
+                    if(imgN.width > this.options.cWidth || imgN.height > this.options.cHeight){
+                        item.scaleX = scale;
+                        item.scaleY = scale;
+                        item.x -= (imgN.width - imgN.width*scale)/2;
+                        item.y -= (imgN.height - imgN.height*scale)/2;
+                        item.x += this.options.cWidth/2 - imgN.width*scale/2;
+                        item.y += this.options.cHeight/2 - imgN.height*scale/2;
+                    }else{
+                        item.x += this.options.cWidth/2 - imgN.width*item.scaleX/2;
+                        item.y += this.options.cHeight/2 - imgN.height*item.scaleX/2;
+                    }
                 }
+
+                //  执行图片加载完成的回调
+                if(typeof imgN.data.callback == 'function'){
+                    imgN.data.callback(item,imgN.width,imgN.height);
+                }
+
+                this.stage.update();
             }.bind(this);
 
             imgN.onerror = function(){
@@ -502,5 +519,7 @@ var imgMerge = (function() {
         this.stage.removeAllChildren();
         createjs.Ticker.removeEventListener("tick", this.stage);
     }
-    return imgMergeClass;
+
+    if (typeof exports !== 'undefined') exports.imgMerge = imgMergeClass;
+    else window.imgMerge = imgMergeClass;
 }());

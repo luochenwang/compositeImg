@@ -26,7 +26,7 @@
             <input type="file" accept="image/*" id="upimgBtn2"/>
         </div>
         <div class="up-after">
-            <canvas id="canvas1"></canvas>
+            <canvas id="canvas1" style="border:1px solid #fff"></canvas>
             <div class="generate">生成</div>
             <div class="addimg">添加图片</div>
             <img src="" id="view">
@@ -64,7 +64,7 @@
                     data: [{
                             val: './img/slide2.jpg',
                             zIndex: 1,
-                            id: "bg"
+                            id: "bg",
                         },
                         {
                             val:e.target.result,
@@ -74,6 +74,10 @@
                             scale: 1.2,
                             rotation: 50,
                             id:"upimg",
+                            align:'center',
+                            callback:function(data){
+                                console.log(data);
+                            }
                         },
                         {
                             val: '宙斯',
