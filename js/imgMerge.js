@@ -35,7 +35,8 @@
             cHeight:1206,
             data:[],
             moveIndex:null,
-            parentBoxEl:''
+            parentBoxEl:'',
+            bgColor:"#ffffff"
         };
 
         // 图片判断正则
@@ -44,7 +45,6 @@
         this.base64Reg = /^data:image\/(jpeg|png|gif);base64,/;
         // 第一次加载完成的数量
         this.loadEndIndex = 0;
-        // 默认参数合并
         for ( var i in options ) {
             this.options[i] = options[i];
         }
@@ -63,7 +63,20 @@
 
 
         this.stage = new createjs.Stage(this.canvas);
+        this.container = new createjs.Container();
+        // 添加背景色
+        this.addBgColor();
+        // 默认参数合并
+        for ( var i in options ) {
+            this.options[i] = options[i];
+        }
         this.dataInit();
+    }
+    // 添加背景色
+    imgMergeClass.prototype.addBgColor = function(){
+         var graphics = new createjs.Graphics().beginFill(this.options.bgColor).drawRect(0, 0, this.options.cWidth, this.options.cHeight);
+         var shape = new createjs.Shape(graphics);
+         this.stage.addChild(shape,this.container);
     }
     // 元素初始化
     imgMergeClass.prototype.dataInit = function(){
@@ -196,7 +209,7 @@
             imgN.onload = function(){
 
                 var img = new createjs.Bitmap(imgN);
-            
+                
                 img.x = imgX;
                 img.y = imgY;
                 img.scaleX = imgScale;
@@ -226,7 +239,6 @@
                     }
                 }
 
-
                 // 判断图片是否铺满剧中
                 if(imgN.data.align == 'center'){
                      if(imgN.width > imgN.height){
@@ -247,12 +259,16 @@
                         img.y += this.options.cHeight/2 - imgN.height*img.scaleX/2;
                     }
                 }
+
+
                 //  执行图片加载完成的回调
                 if(typeof imgN.data.callback == 'function'){
                     imgN.data.callback(img,imgN.width,imgN.height);
                 }
 
-                this.stage.addChild(img);
+
+
+                this.container.addChild(img);
                 this.stage.update();
                 if(this.loadEndIndex >= length){
                     this.loadingEnd();
@@ -284,7 +300,7 @@
             textN.setTransform(obj.x,obj.y,obj.scale,obj.scale,obj.rotation);
 
             textN.textAlign = obj.fontAlign;
-            this.stage.addChild(textN);
+            this.container.addChild(textN);
             if(typeof index === "number"){
                 this.options.data[index].val = textN;
                 if(this.options.moveIndex == index){
@@ -349,7 +365,7 @@
         var index = -1,idArr = [];
         if(val == 'delactAll'){
             idArr = [];
-            this.stage.removeAllChildren();
+            this.container.removeAllChildren();
             this.options.data = [];
             this.update();
         }else if(val instanceof Array){
@@ -367,7 +383,7 @@
             }
 
             if(index != -1 || this.options.data[index]){
-                this.stage.removeChild(this.options.data[index].val);
+                this.container.removeChild(this.options.data[index].val);
                 this.options.data.splice(index,1);
                 this.update();
             }
@@ -421,7 +437,7 @@
     // 设置层级
     imgMergeClass.prototype.setZIndex = function(data,index){
         if(typeof index === "number"){
-            this.stage.setChildIndex(data,index);
+            this.container.setChildIndex(data,index);
         }
     }
     // 排序
@@ -475,7 +491,7 @@
     };
     // 导出
     imgMergeClass.prototype.export = function(){
-        var base64 = this.canvas.toDataURL('image/png');
+        var base64 = this.stage.toDataURL('image/png');
         return base64;
     };
     // 适配
@@ -515,7 +531,6 @@
         this.stage.removeAllChildren();
         createjs.Ticker.removeEventListener("tick", this.stage);
     }
-
     if (typeof exports !== 'undefined') exports.imgMerge = imgMergeClass;
     else window.imgMerge = imgMergeClass;
 }());

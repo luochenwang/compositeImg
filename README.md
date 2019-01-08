@@ -18,6 +18,7 @@ var imgMergeN = new imgMerge({
     cHeight:1208,       // canvas的高度
     parentBoxEl:dom,    // 父级的类如果填写会根据的父级的宽高自适应  ‘.warp’ || '#warp'
     align:'center',     // 等比例图片剧中  当图片宽度或者高度超过屏幕，根据比例等比例缩小铺满屏幕  注：仅对图片有效
+    bgColor:'#fff',     // 背景色
     data: [{ 
             val: './img/slide2.jpg',  // 图片地址   *必传
             zIndex: 1,  // 层级
@@ -50,6 +51,7 @@ var imgMergeN = new imgMerge({
     moveIndex: "upimg", // 要编辑的id
     parentBoxEl:dom,    // 父级的类如果填写会根据的父级的宽高自适应  ‘.warp’ || '#warp'
     align:'center',     // 等比例图片剧中  当图片宽度或者高度超过屏幕，根据比例等比例缩小铺满屏幕  注：仅对图片有效
+    bgColor:'#fff',     // 背景色
     data: [{ 
             val: './img/slide2.jpg',  // 图片地址   *必传
             zIndex: 1,  // 层级
