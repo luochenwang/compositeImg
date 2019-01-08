@@ -227,10 +227,6 @@
                 }
 
 
-                //  执行图片加载完成的回调
-                if(typeof imgN.data.callback == 'function'){
-                    imgN.data.callback(img,imgN.width,imgN.height);
-                }
                 // 判断图片是否铺满剧中
                 if(imgN.data.align == 'center'){
                      if(imgN.width > imgN.height){
@@ -250,6 +246,10 @@
                         img.x += this.options.cWidth/2 - imgN.width*img.scaleX/2;
                         img.y += this.options.cHeight/2 - imgN.height*img.scaleX/2;
                     }
+                }
+                //  执行图片加载完成的回调
+                if(typeof imgN.data.callback == 'function'){
+                    imgN.data.callback(img,imgN.width,imgN.height);
                 }
 
                 this.stage.addChild(img);
