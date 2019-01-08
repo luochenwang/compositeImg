@@ -196,30 +196,23 @@
             imgN.onload = function(){
 
                 var img = new createjs.Bitmap(imgN);
-                
+            
                 img.x = imgX;
                 img.y = imgY;
                 img.scaleX = imgScale;
                 img.scaleY = imgScale;
                 img.rotation = imgRotation;
-
-
-                this.stage.addChild(img);
-
                 var shapeValIndex = imgN.index;
+
                 this.options.data[shapeValIndex].val = img;
-                var item = this.options.data[shapeValIndex].val;
                 if(typeof index === "number"){
 
-                    this.imgDataInit(item);
+                    this.imgDataInit(img);
 
                     if(this.options.moveIndex == shapeValIndex){
                         this.isAddImgEvent(imgN.data.moveIndex);
                     }
                     ++this.loadEndIndex;
-                    if(this.loadEndIndex >= length){
-                        this.loadingEnd();
-                    }
                 }else{
                     this.dataSort();
                     // 判断需不需要更新需要移动的元素
@@ -234,6 +227,10 @@
                 }
 
 
+                //  执行图片加载完成的回调
+                if(typeof imgN.data.callback == 'function'){
+                    imgN.data.callback(img,imgN.width,imgN.height);
+                }
                 // 判断图片是否铺满剧中
                 if(imgN.data.align == 'center'){
                      if(imgN.width > imgN.height){
@@ -243,24 +240,23 @@
                     }
 
                     if(imgN.width > this.options.cWidth || imgN.height > this.options.cHeight){
-                        item.scaleX = scale;
-                        item.scaleY = scale;
-                        item.x -= (imgN.width - imgN.width*scale)/2;
-                        item.y -= (imgN.height - imgN.height*scale)/2;
-                        item.x += this.options.cWidth/2 - imgN.width*scale/2;
-                        item.y += this.options.cHeight/2 - imgN.height*scale/2;
+                        img.scaleX = scale;
+                        img.scaleY = scale;
+                        img.x -= (imgN.width - imgN.width*scale)/2;
+                        img.y -= (imgN.height - imgN.height*scale)/2;
+                        img.x += this.options.cWidth/2 - imgN.width*scale/2;
+                        img.y += this.options.cHeight/2 - imgN.height*scale/2;
                     }else{
-                        item.x += this.options.cWidth/2 - imgN.width*item.scaleX/2;
-                        item.y += this.options.cHeight/2 - imgN.height*item.scaleX/2;
+                        img.x += this.options.cWidth/2 - imgN.width*img.scaleX/2;
+                        img.y += this.options.cHeight/2 - imgN.height*img.scaleX/2;
                     }
                 }
 
-                //  执行图片加载完成的回调
-                if(typeof imgN.data.callback == 'function'){
-                    imgN.data.callback(item,imgN.width,imgN.height);
-                }
-
+                this.stage.addChild(img);
                 this.stage.update();
+                if(this.loadEndIndex >= length){
+                    this.loadingEnd();
+                }
             }.bind(this);
 
             imgN.onerror = function(){
