@@ -227,7 +227,6 @@
                     }
                     ++this.loadEndIndex;
                 }else{
-                    this.dataSort();
                     // 判断需不需要更新需要移动的元素
                     if(this.options.moveIndex){
                         this.fileImg = this.options.data[this.options.moveIndex].val;
@@ -267,9 +266,10 @@
                 }
 
 
-
                 this.container.addChild(img);
                 this.stage.update();
+
+                this.dataSort();
                 if(this.loadEndIndex >= length){
                     this.loadingEnd();
                 }
